@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: Level Config
   m_EditorClassIdentifier: 
   <WallViewTemplate>k__BackingField: {fileID: 1171682760172774040, guid: 065ba01ee2d350249bbc0e0b2b20f453, type: 3}
+  <PlayerViewTemplate>k__BackingField: {fileID: 4643606928389069975, guid: 21b9a6c63e57ae9468fbc31f0c7781ed, type: 3}
+  <EnemyViewTemplate>k__BackingField: {fileID: -2682195839292392143, guid: 48ae9ec9e23aac14bb0615b1de6e384f, type: 3}
+  <BulletViewTemplate>k__BackingField: {fileID: 1962080744621964523, guid: d532da2395fdc1e4588f3e31251a2ad9, type: 3}

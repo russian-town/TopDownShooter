@@ -15,7 +15,10 @@ namespace Source.Codebase.Services
         {
             _viewTemplateByTypes = new()
             {
-                { typeof(WallView), levelConfig.WallViewTemplate }
+                { typeof(WallView), levelConfig.WallViewTemplate },
+                { typeof(PlayerView), levelConfig.PlayerViewTemplate },
+                { typeof(EnemyView), levelConfig.EnemyViewTemplate },
+                { typeof(BulletView), levelConfig.BulletViewTemplate }
             };
         }
 

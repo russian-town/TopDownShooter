@@ -9,29 +9,29 @@ namespace Source.Codebase.Domain.Models
         private Cell _east;
         private Cell _west;
         private Cell _nextOnPath;
-        private CellType _cellType;
+        private CellType _type;
         private int _distance;
-        private Vector2 _worldPosition;
+        private Vector2Int _boardPosition;
 
         public bool HasPath => _distance != int.MaxValue;
         public bool IsAlternative { get; set; }
-        public CellType CellType => _cellType;
+        public CellType Type => _type;
 
-        public void SetWorldPosition(Vector2 worldPosition)
-            => _worldPosition = worldPosition;
+        public void SetBoardPosition(Vector2Int boardPosition)
+            => _boardPosition = boardPosition;
 
         public void BecomeEmpty()
-            => _cellType = CellType.Empty;
+            => _type = CellType.Empty;
 
         public void BecomeDestination()
         {
-            _cellType = CellType.Destination;
+            _type = CellType.Destination;
             _distance = 0;
             _nextOnPath = null;
         }
 
         public void BecomeWall()
-            => _cellType = CellType.Wall;
+            => _type = CellType.Wall;
 
         public static void MakeEastWestNeighbors(Cell east, Cell west)
         {
@@ -58,7 +58,7 @@ namespace Source.Codebase.Domain.Models
 
             neighbor._distance = _distance + 1;
             neighbor._nextOnPath = this;
-            return neighbor.CellType != CellType.Wall ? neighbor : null;
+            return neighbor.Type != CellType.Wall ? neighbor : null;
         }
 
         public Cell GrowPathNorth() => GrowPathTo(_north);
