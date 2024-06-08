@@ -1,5 +1,6 @@
 using Source.Codebase.Controllers.GameInput.Abstract;
 using Source.Codebase.Controllers.Presenters.Abstract;
+using Source.Codebase.Domain.Configs;
 using Source.Codebase.Domain.Models;
 using Source.Codebase.Presentation;
 using Source.Codebase.Services;
@@ -13,20 +14,26 @@ namespace Source.Codebase.Controllers.Presenters
         private readonly PlayerView _playerView;
         private readonly IInput _input;
         private readonly GameLoopService _gameLoopService;
+        private readonly StaticDataService _staticDataService;
 
         public PlayerPresenter(
             Player player,
             PlayerView playerView,
             Vector3 worldPosition,
             IInput input,
-            GameLoopService gameLoopService)
+            GameLoopService gameLoopService,
+            StaticDataService staticDataService)
         {
             _player = player;
             _playerView = playerView;
             _input = input;
             _gameLoopService = gameLoopService;
+            _staticDataService = staticDataService;
             _player.SetWorldPosition(worldPosition);
             _player.SetStartAngle(0f);
+            EntityConfig config =
+                _staticDataService.GetEntityConfigByType(typeof(Player));
+            _player.SetConfig(config);
             _playerView.SetWorldPosition(worldPosition);
             _playerView.SetRotation(_player.Angle);
         }
@@ -51,6 +58,8 @@ namespace Source.Codebase.Controllers.Presenters
 
         private void OnShootButtonDown()
         {
+            RaycastHit2D[] raycastHit2D = _player.Shoot();
+            _playerView.SetResults(raycastHit2D);
         }
 
         private void OnAimButtonDown()

@@ -19,7 +19,8 @@ namespace Source.Codebase.Infrastructure
             int height = Mathf.RoundToInt(Camera.main.orthographicSize * 2f);
             int width = Mathf.RoundToInt(height * Screen.width / Screen.height);
             Gameboard gameboard = new(width, height);
-            GameLoopService gameLoopService = new(gameboard);
+            BulletViewFactory bulletViewFactory = new(staticDataService);
+            GameLoopService gameLoopService = new(gameboard, bulletViewFactory);
             WallViewFactory wallViewFactory = new(staticDataService);
             WallRandomService wallRandomService = new(gameboard, wallViewFactory);
             wallRandomService.GenerateWalls();
@@ -28,7 +29,12 @@ namespace Source.Codebase.Infrastructure
             Vector3 playerSpawnPosition =
                 gameboard.GetWorldFromBoardPosition(new(0, height / 2));
             PlayerPresenter playerPresenter =
-                new(player, playerView, playerSpawnPosition, _desktopInput, gameLoopService);
+                new(player,
+                    playerView,
+                    playerSpawnPosition,
+                    _desktopInput,
+                    gameLoopService,
+                    staticDataService);
             playerView.Construct(playerPresenter);
             Vector3 enemySpawnPosition =
                 gameboard.GetWorldFromBoardPosition(new(width - 1, height / 2));

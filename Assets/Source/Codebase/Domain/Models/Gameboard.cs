@@ -70,11 +70,14 @@ namespace Source.Codebase.Domain.Models
             return new Vector2Int(Mathf.RoundToInt(boardPosition.x), Mathf.RoundToInt(boardPosition.y));
         }
 
+        public CellType GetCellTypeFromBoardPosition(Vector2Int boardPosition)
+            => GetCell(boardPosition).Type;
+
         public bool IsCellExist(Vector2Int boardPosition) =>
             boardPosition.x >= 0 && boardPosition.x < Width &&
             boardPosition.y >= 0 && boardPosition.y < Height;
 
-        public Cell GetCell(Vector2Int boardPosition)
+        private Cell GetCell(Vector2Int boardPosition)
         {
             if (IsCellExist(boardPosition) == false)
                 throw new Exception($"Cell with coordinates {boardPosition} does not exist!");

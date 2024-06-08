@@ -7,10 +7,12 @@ namespace Source.Codebase.Services
     public class GameLoopService
     {
         private readonly Gameboard _gameboard;
+        private readonly BulletViewFactory _bulletViewFactory;
 
-        public GameLoopService(Gameboard gameboard)
+        public GameLoopService(Gameboard gameboard, BulletViewFactory bulletViewFactory)
         {
             _gameboard = gameboard;
+            _bulletViewFactory = bulletViewFactory;
         }
 
         public bool CanChangePosition(Vector3 worldPosition)
@@ -20,13 +22,19 @@ namespace Source.Codebase.Services
 
             if (_gameboard.IsCellExist(boardPosition))
             {
-                if (_gameboard.GetCell(boardPosition).Type == CellType.Wall)
+                if (_gameboard.GetCellTypeFromBoardPosition(boardPosition) == CellType.Wall)
                     return false;
 
                 return true;
             }
 
             return false;
+        }
+
+        public void Shoot()
+        {
+            Bullet bullet = new();
+            _bulletViewFactory.Create(bullet);
         }
     }
 }

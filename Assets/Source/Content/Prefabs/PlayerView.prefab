@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3229034503994315440}
   - component: {fileID: 3991097307522696828}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 4643606928389069975}
   - component: {fileID: 2112474437549022945}
   - component: {fileID: -6174895591477549727}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +132,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transform: {fileID: 2525642394042971902}
-  _rigidbody: {fileID: 2112474437549022945}
 --- !u!50 &2112474437549022945
 Rigidbody2D:
   serializedVersion: 4
@@ -204,7 +203,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1692927088892338072}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -237,7 +236,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8692326906347576175}
   - component: {fileID: 4846027102635600539}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
