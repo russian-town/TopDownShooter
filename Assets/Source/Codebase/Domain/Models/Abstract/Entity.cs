@@ -1,5 +1,4 @@
 using System;
-using Source.Codebase.Domain.Configs;
 using UnityEngine;
 
 namespace Source.Codebase.Domain.Models.Abstract
@@ -9,75 +8,63 @@ namespace Source.Codebase.Domain.Models.Abstract
         private readonly float _speed = 3f;
         private readonly float _smoothDamp = .1f;
 
-        private Vector3 _worldPosition;
         private float _currentVelocity;
-        private EntityConfig _config;
+        private Transform _gunEnd;
 
-        private Vector2 Forward =>
-            new Vector2(_worldPosition.x, 0f).normalized;
+        public Vector2 WorldPosition { get; private set; }
         public float Angle { get; private set; }
 
-        public event Action<Vector3> PositionChanged;
+        public event Action<Vector2> PositionChanged;
+
+        public void SetGunEnd(Transform gunEnd)
+            => _gunEnd = gunEnd;
 
         public void SetWorldPosition(Vector3 worldPosition)
-            => _worldPosition = worldPosition;
+            => WorldPosition = worldPosition;
 
         public void SetStartAngle(float angle)
             => Angle = angle;
 
-        public void SetConfig(EntityConfig entityConfig)
-            => _config = entityConfig;
-
-        public void Move(Vector3 newWorldPosition)
+        public void Move(Vector2 newWorldPosition)
         {
-            Vector3 direction = newWorldPosition - _worldPosition;
-            _worldPosition = newWorldPosition;
-            float targetAngle =
-                Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            Vector2 direction = newWorldPosition - WorldPosition;
+            WorldPosition = newWorldPosition;
+            float radiansAngle =
+                Mathf.Atan2(direction.y, direction.x);
+            float angle = radiansAngle * Mathf.Rad2Deg;
             Angle =
-                Mathf.SmoothDampAngle(Angle, targetAngle, ref _currentVelocity, _smoothDamp);
-            PositionChanged?.Invoke(_worldPosition);
+                Mathf.SmoothDampAngle(Angle, angle, ref _currentVelocity, _smoothDamp);
+            PositionChanged?.Invoke(WorldPosition);
         }
 
-        public RaycastHit2D[] Shoot()
+        public Vector2[] GetTrajectory()
         {
-            RaycastHit2D[] results = new RaycastHit2D[10];
-            Debug.Log("Shoot");
+            Vector2 origin = WorldPosition;
+            Vector2 direction = _gunEnd.right;
+            Vector2[] directions = new Vector2[20];
 
-            if (Physics2D.Raycast(
-                _worldPosition,
-                Vector2.right,
-                _config.ContactFilter2D,
-                results,
-                Mathf.Infinity) > 0)
+            for (int i = 0; i < 20; i++)
             {
-                Debug.Log(results[0].transform.name);
+                RaycastHit2D hitInfo = Physics2D.Raycast(origin, direction, Mathf.Infinity);
 
-                if (results[0].transform.TryGetComponent(out IDamageble damageble))
+                if (hitInfo)
                 {
-                    damageble.TakeDamage(10f);
-                    return results;
+                    direction = Vector3.Reflect(direction, hitInfo.normal);
+                    origin = hitInfo.point;
+                    Debug.DrawLine(origin, origin + direction * hitInfo.distance, Color.red, 0.2f);
                 }
-
-                Vector3 cross = Vector3.Cross(results[0].point, results[0].normal);
-
-                while (Physics2D.Raycast(
-                    results[0].point,
-                    cross,
-                    _config.ContactFilter2D,
-                    results,
-                    Mathf.Infinity) > 0)
+                else
                 {
-                    Debug.Log(results[0].transform.name);
+                    break;
                 }
             }
 
-            return results;
+            return directions;
         }
 
-        public Vector3 CalculatePosition(Vector3 direction)
+        public Vector3 CalculatePosition(Vector2 direction)
         {
-           return _worldPosition + _speed * Time.deltaTime * direction;
+            return WorldPosition + _speed * Time.deltaTime * direction;
         }
     }
 }

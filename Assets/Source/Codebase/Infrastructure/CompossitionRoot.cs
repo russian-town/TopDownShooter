@@ -12,6 +12,8 @@ namespace Source.Codebase.Infrastructure
     {
         [SerializeField] private LevelConfig _levelConfig;
         [SerializeField] private DesktopInput _desktopInput;
+        [SerializeField] private CoroutineRunner _coroutineRunner;
+        [SerializeField] private Canvas _canvas;
 
         private void Awake()
         {
@@ -19,8 +21,8 @@ namespace Source.Codebase.Infrastructure
             int height = Mathf.RoundToInt(Camera.main.orthographicSize * 2f);
             int width = Mathf.RoundToInt(height * Screen.width / Screen.height);
             Gameboard gameboard = new(width, height);
-            BulletViewFactory bulletViewFactory = new(staticDataService);
-            GameLoopService gameLoopService = new(gameboard, bulletViewFactory);
+            BulletFactory bulletFactory = new(staticDataService);
+            GameLoopService gameLoopService = new(gameboard);
             WallViewFactory wallViewFactory = new(staticDataService);
             WallRandomService wallRandomService = new(gameboard, wallViewFactory);
             wallRandomService.GenerateWalls();
@@ -34,7 +36,7 @@ namespace Source.Codebase.Infrastructure
                     playerSpawnPosition,
                     _desktopInput,
                     gameLoopService,
-                    staticDataService);
+                    bulletFactory);
             playerView.Construct(playerPresenter);
             Vector3 enemySpawnPosition =
                 gameboard.GetWorldFromBoardPosition(new(width - 1, height / 2));

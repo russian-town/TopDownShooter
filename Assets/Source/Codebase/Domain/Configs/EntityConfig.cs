@@ -6,5 +6,6 @@ namespace Source.Codebase.Domain.Configs
     public class EntityConfig : ScriptableObject
     {
         [field: SerializeField] public ContactFilter2D ContactFilter2D { get; private set; }
+        [field: SerializeField] public LayerMask LayerMask { get; private set; }
     }
 }

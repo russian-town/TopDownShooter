@@ -16,3 +16,5 @@ MonoBehaviour:
   <PlayerViewTemplate>k__BackingField: {fileID: 4643606928389069975, guid: 21b9a6c63e57ae9468fbc31f0c7781ed, type: 3}
   <EnemyViewTemplate>k__BackingField: {fileID: -2682195839292392143, guid: 48ae9ec9e23aac14bb0615b1de6e384f, type: 3}
   <BulletViewTemplate>k__BackingField: {fileID: 1962080744621964523, guid: d532da2395fdc1e4588f3e31251a2ad9, type: 3}
+  <PlayerConfig>k__BackingField: {fileID: 11400000, guid: 6d59cb495a196074d85992112b544124, type: 2}
+  <EnemyConfig>k__BackingField: {fileID: 11400000, guid: e1c94ff32eb55ac4ba6b35e6e079bb36, type: 2}

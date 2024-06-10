@@ -1,6 +1,5 @@
 using Source.Codebase.Controllers.GameInput.Abstract;
 using Source.Codebase.Controllers.Presenters.Abstract;
-using Source.Codebase.Domain.Configs;
 using Source.Codebase.Domain.Models;
 using Source.Codebase.Presentation;
 using Source.Codebase.Services;
@@ -14,7 +13,7 @@ namespace Source.Codebase.Controllers.Presenters
         private readonly PlayerView _playerView;
         private readonly IInput _input;
         private readonly GameLoopService _gameLoopService;
-        private readonly StaticDataService _staticDataService;
+        private readonly BulletFactory _bulletFactory;
 
         public PlayerPresenter(
             Player player,
@@ -22,18 +21,16 @@ namespace Source.Codebase.Controllers.Presenters
             Vector3 worldPosition,
             IInput input,
             GameLoopService gameLoopService,
-            StaticDataService staticDataService)
+            BulletFactory bulletFactory)
         {
             _player = player;
             _playerView = playerView;
             _input = input;
             _gameLoopService = gameLoopService;
-            _staticDataService = staticDataService;
+            _bulletFactory = bulletFactory;
+            _player.SetGunEnd(_playerView.GunEnd);
             _player.SetWorldPosition(worldPosition);
             _player.SetStartAngle(0f);
-            EntityConfig config =
-                _staticDataService.GetEntityConfigByType(typeof(Player));
-            _player.SetConfig(config);
             _playerView.SetWorldPosition(worldPosition);
             _playerView.SetRotation(_player.Angle);
         }
@@ -54,16 +51,15 @@ namespace Source.Codebase.Controllers.Presenters
             _input.DirectionChanged -= OnDirectionChaged;
         }
 
-        private void OnPositionChanged(Vector3 newWorldPosition) { }
+        private void OnPositionChanged(Vector2 newWorldPosition) { }
 
         private void OnShootButtonDown()
-        {
-            RaycastHit2D[] raycastHit2D = _player.Shoot();
-            _playerView.SetResults(raycastHit2D);
-        }
+            => _bulletFactory.Create(_playerView.GunEnd.position, _playerView.GunEnd.right);
 
         private void OnAimButtonDown()
         {
+            Vector2[] directions = _player.GetTrajectory();
+            _playerView.ShowTrail(directions, _player.WorldPosition);
         }
 
         private void OnDirectionChaged(Vector2 direction)

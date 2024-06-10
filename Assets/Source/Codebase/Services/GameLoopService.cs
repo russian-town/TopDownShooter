@@ -7,12 +7,10 @@ namespace Source.Codebase.Services
     public class GameLoopService
     {
         private readonly Gameboard _gameboard;
-        private readonly BulletViewFactory _bulletViewFactory;
 
-        public GameLoopService(Gameboard gameboard, BulletViewFactory bulletViewFactory)
+        public GameLoopService(Gameboard gameboard)
         {
             _gameboard = gameboard;
-            _bulletViewFactory = bulletViewFactory;
         }
 
         public bool CanChangePosition(Vector3 worldPosition)
@@ -29,12 +27,6 @@ namespace Source.Codebase.Services
             }
 
             return false;
-        }
-
-        public void Shoot()
-        {
-            Bullet bullet = new();
-            _bulletViewFactory.Create(bullet);
         }
     }
 }

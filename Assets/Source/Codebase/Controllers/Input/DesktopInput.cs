@@ -15,10 +15,10 @@ namespace Source.Codebase.Controllers.GameInput
 
         private void Update()
         {
-            if(Input.GetMouseButtonDown(0))
+            if(Input.GetMouseButtonUp(0))
                 ShootButtonDown?.Invoke();
 
-            if(Input.GetMouseButtonDown(1))
+            if(Input.GetMouseButton(0))
                 AimButtonDown?.Invoke();
 
             Vector2 direction =
